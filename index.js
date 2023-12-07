@@ -32,9 +32,9 @@ const fakeDB = {
         { id: 3, name: 'Investice', blogs: '1' },
     ],
     blogs: [
-        { id: 1, title: 'Clanek 1', content: 'Zalozeni blogu', author: 'Cyril',username:'cyrilS', categoryId: 1,category: "Life" },
-        { id: 2, title: 'Clanek 2', content: 'Návrh API', author: 'David', username:'davidH',categoryId: 2, category: "Technologie"},
-        { id: 3, title: 'Clanek 3', content: 'Investice v EU', author: 'Rezident',username:'rezidentS', categoryId: 3,category: "Investice" },
+        { id: 1, title: 'Clanek 1', content: 'Zalozeni blogu', author: 'Cyril',username:'cyrilS', categoryId: 1,category: "Life", date: "15.9.2023" },
+        { id: 2, title: 'Clanek 2', content: 'Návrh API', author: 'David', username:'davidH',categoryId: 2, category: "Technologie",date: "8.12.2023"},
+        { id: 3, title: 'Clanek 3', content: 'Investice v EU', author: 'Rezident',username:'rezidentS', categoryId: 3, category: "Investice",date: "10.12.2023" },
     ]
 };
 
@@ -47,10 +47,10 @@ app.get('/users', (req, res) => {
 //return user/:id only
 app.get('/users/:id', (req, res) => {
     const authorId = parseInt(req.params.id);
-    const author = fakeDB.authors.find(a => a.id === authorId);
+    const author = fakeDB.users.find(a => a.id === authorId);
 
     if (author) {
-        res.json(author);
+        res.status(200).json(author);
     } else {
         res.status(404).json({ error: 'User not found!' });
     }
@@ -59,6 +59,22 @@ app.get('/users/:id', (req, res) => {
 app.get('/blogs', (req, res) => {
     const blogs = fakeDB.blogs
     res.status(200).json(blogs);
+});
+//return blog with id only
+app.get('/blogs/:id', (req, res) => {
+    const blogId = parseInt(req.params.id);
+    const blog = fakeDB.blogs.find(blog => blog.id === blogId);
+
+    if (blog) {
+        res.status(200).json(blog);
+    } else {
+        res.status(404).json({ error: 'Blog not found! Invalid id?' });
+    }
+});
+//return all categories
+app.get('/categories', (req, res) => {
+    const categories = fakeDB.categories
+    res.status(200).json(categories);
 });
 
 //Query
@@ -106,7 +122,6 @@ app.patch('/blogs/:id/author', (req, res) => {
     } else {
         res.status(404).json({ error: 'Blog not found.' });
     }
-    res.status(404).json({error: 'Wrong body request.'})
 });
 //POST
 //Create new user with required username, email and name
