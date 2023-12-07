@@ -19,3 +19,7 @@ __Cílem tohoto úkolu je navrhnout REST API dle zadání. Na výběr máš dvě
 
 - API example from [Gitlab](https://docs.gitlab.com/ee/api/users.html)
 - use [POSTMAN](https://blog.postman.com/how-to-create-a-rest-api-with-node-js-and-express/) or [Rest Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) to send request
+
+# Results
+
+- [results](res)
