@@ -5,7 +5,7 @@
 
 DELETE http://localhost:3000/users/4 HTTP/1.1
 
-```
+```json
 HTTP/1.1 204 No Content
 X-Powered-By: Express
 Date: Thu, 07 Dec 2023 23:28:00 GMT
@@ -16,7 +16,7 @@ Connection: close
 
 DELETE http://localhost:3000/blogs/3
 
-```
+```json
 {
   "message": "Blog deleted successfully."
 }

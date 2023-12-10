@@ -1,14 +1,16 @@
 // Dependencies
 
 const express = require('express');
-const bodyParser = require('body-parser')
-//const fakeDB = require('./data/fakedb')
+const bodyParser = require('body-parser');
+
+const {fakeDB} = require('./data/fakedb');
 //Configuration
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '127.0.0.1';
 
 //Run Express
 const app = express();
+express.json();
 app.use(bodyParser.json())
 //Define endpoint
 app.get('/status', (req, response) => {
@@ -20,23 +22,6 @@ app.get('/status', (req, response) => {
  });
 
 //fakeDB
-const fakeDB = {
-    users: [
-        { id: 1, username: 'cyrilS', email: 'cyril123@example.com',name: 'Cyril Steger' },
-        { id: 2, username: 'davidH', email: 'david123@example.com',name: 'David Hruška' },
-        { id: 3, username: 'rezidentS', email: 'rezident123@example.com', name: 'Rezident'},
-    ],
-    categories: [
-        { id: 1, name: 'Life',blogs: '1' },
-        { id: 2, name: 'Technologie',blogs: '1', },
-        { id: 3, name: 'Investice', blogs: '1' },
-    ],
-    blogs: [
-        { id: 1, title: 'Clanek 1', content: 'Zalozeni blogu', author: 'Cyril',username:'cyrilS', categoryId: 1,category: "Life", date: "15.9.2023" },
-        { id: 2, title: 'Clanek 2', content: 'Návrh API', author: 'David', username:'davidH',categoryId: 2, category: "Technologie",date: "8.12.2023"},
-        { id: 3, title: 'Clanek 3', content: 'Investice v EU', author: 'Rezident',username:'rezidentS', categoryId: 3, category: "Investice",date: "10.12.2023" },
-    ]
-};
 
 //GET
 //Return vsechny uzivatele
@@ -61,7 +46,7 @@ app.get('/blogs', (req, res) => {
     res.status(200).json(blogs);
 });
 //return blog with id only
-app.get('/blogs/:id', (req, res) => {
+app.get('/blogs/search/:id', (req, res) => {
     const blogId = parseInt(req.params.id);
     const blog = fakeDB.blogs.find(blog => blog.id === blogId);
 
@@ -125,19 +110,49 @@ app.patch('/blogs/:id/author', (req, res) => {
 });
 //POST
 //Create new user with required username, email and name
-app.post('/users',(req,res)=>{
+app.post('/users/new',(req,res)=>{
     const {username,email,name} = req.body;
 
-    //Validation
-    if(!username||!email||!name) {
+    //If any of these are missing
+    if(!username || !email || !name) {
         return res.status(404).json({
-            error: "Missing required fields: 'Required: username, email, name '"
-        })
+            error: "Missing required fields. Required: username, email, name"
+        });
     }
     //Add new user to fakeDb
     const newUser = {id: fakeDB.users.length + 1, username, email, name};
     fakeDB.users.push(newUser);
     res.status(201).json(newUser);
+});
+//Crete new blog post from author, name, category
+app.post('/blogs/new',(req,res) =>{
+    //read data from query
+    const {author,username,title,category,content} = req.body;
+
+    //If any of these are missing.
+    if(!title || !content || !author || !username || !category){
+        return res.status(400).json({
+             error: 'Missing required blog data. Required=author,title,category,content,username, category, ' 
+            });
+    }
+    // auto generated
+    const date = new Date().toLocaleDateString();
+    const categoryId = fakeDB.categories.find(c => c.name === category)?.id;
+
+    // If successful Create new blog post
+    const newBlogPost = {
+        id: fakeDB.blogs.length + 1, // Generate a new ID
+        title: title,
+        content: content,
+        author: author,
+        username: username,
+        categoryId: categoryId,
+        category: category,
+        date: date
+        };
+    // update fakeDB
+    fakeDB.blogs.push(newBlogPost);
+    res.status(201).json(newBlogPost);
 });
 //DELETE
 app.delete('/users/:id', (req, res) => {
@@ -168,5 +183,5 @@ app.delete('/blogs/:id', (req, res) => {
 
 //Console
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on ${HOST}:${PORT}`);
 });

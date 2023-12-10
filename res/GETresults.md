@@ -6,7 +6,7 @@
 
 GET http://localhost:3000/users
 
-```
+```json
 [
   {
     "id": 1,
@@ -33,7 +33,7 @@ GET http://localhost:3000/users
 
 GET http://localhost:3000/users/1
 
-```
+```json
 {
   "id": 1,
   "username": "cyrilS",
@@ -46,7 +46,7 @@ GET http://localhost:3000/users/1
 
 GET http://localhost:3000/users/4
 
-```
+```json
 {
   "error": "User not found!"
 }
@@ -56,7 +56,7 @@ GET http://localhost:3000/users/4
 
 GET http://localhost:3000/blogs
 
-```
+```json
 [
   {
     "id": 1,
@@ -96,7 +96,7 @@ GET http://localhost:3000/blogs
 // Query example
 GET http://localhost:3000/blogs/author/?author=Cyril
 
-```
+```json
 [
   {
     "id": 1,
@@ -115,7 +115,7 @@ GET http://localhost:3000/blogs/author/?author=Cyril
 
 GET http://localhost:3000/blogs/category?category=Life
 
-```
+```json
 [
   {
     "id": 3,

@@ -1,6 +1,6 @@
 # PATCH 
 - Simple example to change author of blog with id 2
-```
+```json
 {
   "id": 2,
   "title": "Clanek 2",
