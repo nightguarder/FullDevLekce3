@@ -67,3 +67,15 @@ DELETE http://localhost:3000/users/4 HTTP/1.1
 ###
 //Delete a blog post by their title
 DELETE http://localhost:3000/blogs/3
+
+###
+//TODO: Strankovani example 
+GET http://localhost:3000/blogs?perPage10&page=1
+//{
+//blogs: [
+//{...}
+//{...}
+//],
+//totalpage:12
+//currentpage:1
+//}
